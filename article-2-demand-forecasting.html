@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How I Built a Python Demand Forecasting Model That Saved $18,000 in Emergency Procurement</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2128;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #3fb950;
+    --accent2: #58a6ff;
+    --warning: #d29922;
+    --danger: #f85149;
+    --code-bg: #0d1117;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 1.8;
+  }
+
+  /* Top bar */
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .repo-path {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .repo-path span { color: var(--accent2); }
+
+  .badge {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  .badge.python { background: rgba(63,185,80,0.15); color: var(--accent); border: 1px solid rgba(63,185,80,0.3); }
+  .badge.ml { background: rgba(88,166,255,0.12); color: var(--accent2); border: 1px solid rgba(88,166,255,0.25); }
+  .badge.case { background: rgba(210,153,34,0.12); color: var(--warning); border: 1px solid rgba(210,153,34,0.25); }
+
+  /* Layout */
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 3.5rem 2rem 6rem;
+  }
+
+  /* Article title */
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  /* Byline */
+  .byline {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin: 1.5rem 0 2.5rem;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3fb950, #1a7f37);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 1rem;
+    color: white;
+    font-style: italic;
+    flex-shrink: 0;
+  }
+
+  .byline-text {
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  .byline-text strong {
+    color: var(--text);
+    font-weight: 500;
+    display: block;
+    font-size: 0.88rem;
+  }
+
+  /* Badge row */
+  .badge-row {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  /* Body */
+  p { margin-bottom: 1.4rem; color: #cdd9e5; }
+
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.55rem;
+    font-weight: 400;
+    color: var(--text);
+    margin: 3rem 0 1rem;
+    letter-spacing: -0.01em;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h3 {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin: 2rem 0 0.75rem;
+    font-weight: 500;
+  }
+
+  /* Stat grid */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 2rem 0;
+  }
+
+  .stat-cell {
+    background: var(--surface);
+    padding: 1.25rem;
+    text-align: center;
+  }
+
+  .stat-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: var(--accent);
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .stat-label {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* Code block */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin: 1.75rem 0;
+    overflow: hidden;
+  }
+
+  .code-header {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 0.6rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .code-lang {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .code-filename {
+    margin-left: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.65rem;
+    color: var(--accent2);
+  }
+
+  pre {
+    padding: 1.25rem 1.5rem;
+    overflow-x: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.8rem;
+    line-height: 1.75;
+    color: #e6edf3;
+  }
+
+  .py-import { color: #ff7b72; }
+  .py-keyword { color: #ff7b72; }
+  .py-func { color: #d2a8ff; }
+  .py-string { color: #a5d6ff; }
+  .py-number { color: #79c0ff; }
+  .py-comment { color: #8b949e; font-style: italic; }
+  .py-class { color: #f0883e; }
+  .py-param { color: #e6edf3; }
+  .py-output { color: var(--accent); }
+
+  /* Alert / insight box */
+  .alert {
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    background: rgba(63,185,80,0.05);
+    padding: 1rem 1.25rem;
+    border-radius: 0 4px 4px 0;
+    margin: 1.75rem 0;
+  }
+
+  .alert.warn {
+    border-left-color: var(--warning);
+    background: rgba(210,153,34,0.05);
+  }
+
+  .alert .alert-title {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+  }
+
+  .alert.warn .alert-title { color: var(--warning); }
+
+  .alert p {
+    font-size: 0.9rem;
+    margin: 0;
+    color: var(--muted);
+  }
+
+  /* Inline code */
+  code {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.82em;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 0.1em 0.4em;
+    border-radius: 3px;
+    color: var(--accent2);
+  }
+
+  /* Pull quote */
+  .pull-quote {
+    border-left: 2px solid var(--accent);
+    padding: 0.5rem 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .pull-quote p {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: var(--text);
+    margin: 0;
+  }
+
+  /* Steps */
+  .steps {
+    list-style: none;
+    counter-reset: s;
+    margin: 1.5rem 0;
+  }
+
+  .steps li {
+    counter-increment: s;
+    position: relative;
+    padding: 0.85rem 1rem 0.85rem 3.25rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.93rem;
+    color: #cdd9e5;
+  }
+
+  .steps li::before {
+    content: counter(s, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0.85rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .steps li strong { color: var(--text); }
+
+  /* Results table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.87rem;
+    margin: 1.5rem 0;
+    font-family: 'Fira Code', monospace;
+  }
+
+  th {
+    text-align: left;
+    padding: 0.6rem 0.85rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  td {
+    padding: 0.6rem 0.85rem;
+    border: 1px solid var(--border);
+    color: #cdd9e5;
+    font-size: 0.82rem;
+  }
+
+  tr:nth-child(even) td { background: var(--surface); }
+
+  td.good { color: var(--accent); }
+  td.bad { color: var(--danger); }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2.5rem 0;
+  }
+
+  /* Tags */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .tag {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background: var(--surface2);
+    color: var(--muted);
+    padding: 0.25rem 0.65rem;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+  }
+
+  @media (max-width: 600px) {
+    .stat-grid { grid-template-columns: 1fr; }
+    .container { padding: 2rem 1.25rem 4rem; }
+    h1 { font-size: 1.7rem; }
+    .topbar { padding: 0.75rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="repo-path">
+    <span>danielnnadi</span> / <span>inventory-forecasting</span> / demand_forecast.py
+  </div>
+  <div class="badge python">Python</div>
+  <div class="badge ml">scikit-learn</div>
+  <div class="badge case">Case Study</div>
+</div>
+
+<div class="container">
+
+  <h1>How I Built a Python Demand Forecasting Model That Saved <em>$18,000</em> in Emergency Procurement</h1>
+
+  <div class="byline">
+    <div class="avatar">D</div>
+    <div class="byline-text">
+      <strong>Daniel Chukwuebuka Nnadi</strong>
+      Senior Data Analytics Specialist · Defem Autocare Ltd
+      <span style="margin-top:0.2rem;display:block;">Published for Towards Data Science / Hashnode · 2026</span>
+    </div>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge python">pandas</span>
+    <span class="badge python">NumPy</span>
+    <span class="badge ml">scikit-learn</span>
+    <span class="badge case">Supply Chain</span>
+  </div>
+
+  <p>Emergency procurement is expensive. Not just financially — it's disruptive. When a part runs out unexpectedly, everything stops: you're calling suppliers at the last minute, paying premium prices, and watching operational timelines slip. At the automotive parts company where I work, this was happening regularly across our 500+ SKU inventory.</p>
+
+  <p>The root cause wasn't bad purchasing decisions. It was <em>reactive</em> purchasing decisions — we were restocking after stock hit zero rather than before. I was asked to look at whether data could help. This is what I built, what I learned, and what it saved.</p>
+
+  <div class="stat-grid">
+    <div class="stat-cell">
+      <span class="stat-number">$18k</span>
+      <span class="stat-label">Annual savings</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-number">65%</span>
+      <span class="stat-label">Fewer emergency orders</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-number">12+</span>
+      <span class="stat-label">Months of training data</span>
+    </div>
+  </div>
+
+  <h2>Understanding the Problem First</h2>
+
+  <p>Before writing a single line of Python, I spent time understanding the procurement workflow. Emergency orders were being triggered when warehouse staff noticed a part was nearly gone — by which point the lead time from suppliers meant we'd already have a gap. The question wasn't "can we predict demand?" but specifically: "can we predict demand early enough to order within normal lead times?"</p>
+
+  <p>That reframing was important. I wasn't trying to build a state-of-the-art forecasting engine. I was trying to predict, for each SKU, whether stock would fall below the reorder threshold within the next 14 days — early enough for a standard purchase order to work.</p>
+
+  <div class="alert">
+    <div class="alert-title">Design Principle</div>
+    <p>Build the model your business needs, not the most technically impressive model. A well-scoped simple model beats an ambitious complex one that doesn't fit the workflow.</p>
+  </div>
+
+  <h2>The Data</h2>
+
+  <p>I pulled 13 months of stock movement data from our SQL inventory database — daily snapshots of quantity on hand per SKU, combined with purchase order history, supplier lead times, and sales records. After cleaning, I had roughly 195,000 rows across 512 SKUs.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-lang">Python</span>
+      <span class="code-filename">01_load_and_clean.py</span>
+    </div>
+    <pre><span class="py-import">import</span> pandas <span class="py-import">as</span> pd
+<span class="py-import">import</span> numpy <span class="py-import">as</span> np
+<span class="py-import">from</span> sqlalchemy <span class="py-import">import</span> create_engine
+
+<span class="py-comment"># Connect to inventory database</span>
+engine = create_engine(<span class="py-string">"mssql+pyodbc://user:pass@server/InventoryDB"</span>)
+
+<span class="py-comment"># Pull 13 months of daily stock movements</span>
+query = <span class="py-string">"""
+    SELECT
+        sm.sku_id,
+        sm.movement_date,
+        sm.qty_on_hand,
+        sm.qty_dispatched,
+        sm.qty_received,
+        i.reorder_threshold,
+        i.category_code,
+        s.avg_lead_days
+    FROM stock_movements sm
+    JOIN inventory i ON sm.sku_id = i.sku_id
+    JOIN suppliers s ON i.primary_supplier_id = s.supplier_id
+    WHERE sm.movement_date >= DATEADD(MONTH, -13, GETDATE())
+"""</span>
+
+df = pd.read_sql(query, engine)
+
+<span class="py-comment"># Parse dates and sort</span>
+df[<span class="py-string">'movement_date'</span>] = pd.to_datetime(df[<span class="py-string">'movement_date'</span>])
+df = df.<span class="py-func">sort_values</span>([<span class="py-string">'sku_id'</span>, <span class="py-string">'movement_date'</span>])
+
+<span class="py-comment"># Flag: will stock drop below threshold in next 14 days?</span>
+df[<span class="py-string">'target'</span>] = (
+    df.<span class="py-func">groupby</span>(<span class="py-string">'sku_id'</span>)[<span class="py-string">'qty_on_hand'</span>]
+      .<span class="py-func">transform</span>(<span class="py-keyword">lambda</span> x: x.<span class="py-func">shift</span>(-<span class="py-number">14</span>) < df[<span class="py-string">'reorder_threshold'</span>])
+).<span class="py-func">astype</span>(<span class="py-class">int</span>)
+
+<span class="py-func">print</span>(df[<span class="py-string">'target'</span>].<span class="py-func">value_counts</span>())
+<span class="py-comment"># Output:</span>
+<span class="py-output"># 0    162,043 (no stockout risk)
+# 1     33,211 (stockout risk within 14 days)</span></pre>
+  </div>
+
+  <h2>Feature Engineering</h2>
+
+  <p>Raw stock numbers aren't enough. The model needs context: how fast is this SKU moving? Is demand seasonal? How many days of stock remain at the current consumption rate? I engineered several features to capture this.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-lang">Python</span>
+      <span class="code-filename">02_features.py</span>
+    </div>
+    <pre><span class="py-keyword">def</span> <span class="py-func">engineer_features</span>(df):
+    <span class="py-comment"># Rolling average daily consumption (7-day and 30-day)</span>
+    df[<span class="py-string">'avg_consumption_7d'</span>] = (
+        df.<span class="py-func">groupby</span>(<span class="py-string">'sku_id'</span>)[<span class="py-string">'qty_dispatched'</span>]
+          .<span class="py-func">transform</span>(<span class="py-keyword">lambda</span> x: x.<span class="py-func">rolling</span>(<span class="py-number">7</span>, min_periods=<span class="py-number">1</span>).<span class="py-func">mean</span>())
+    )
+    df[<span class="py-string">'avg_consumption_30d'</span>] = (
+        df.<span class="py-func">groupby</span>(<span class="py-string">'sku_id'</span>)[<span class="py-string">'qty_dispatched'</span>]
+          .<span class="py-func">transform</span>(<span class="py-keyword">lambda</span> x: x.<span class="py-func">rolling</span>(<span class="py-number">30</span>, min_periods=<span class="py-number">1</span>).<span class="py-func">mean</span>())
+    )
+
+    <span class="py-comment"># Days of stock remaining at current consumption rate</span>
+    df[<span class="py-string">'days_of_stock'</span>] = np.<span class="py-func">where</span>(
+        df[<span class="py-string">'avg_consumption_7d'</span>] > <span class="py-number">0</span>,
+        df[<span class="py-string">'qty_on_hand'</span>] / df[<span class="py-string">'avg_consumption_7d'</span>],
+        <span class="py-number">999</span>  <span class="py-comment"># no consumption = no risk</span>
+    )
+
+    <span class="py-comment"># Stock buffer relative to reorder threshold</span>
+    df[<span class="py-string">'stock_buffer_ratio'</span>] = (
+        df[<span class="py-string">'qty_on_hand'</span>] / df[<span class="py-string">'reorder_threshold'</span>].<span class="py-func">clip</span>(lower=<span class="py-number">1</span>)
+    )
+
+    <span class="py-comment"># Month and day-of-week for seasonality</span>
+    df[<span class="py-string">'month'</span>] = df[<span class="py-string">'movement_date'</span>].dt.month
+    df[<span class="py-string">'day_of_week'</span>] = df[<span class="py-string">'movement_date'</span>].dt.dayofweek
+
+    <span class="py-keyword">return</span> df
+
+df = <span class="py-func">engineer_features</span>(df)</pre>
+  </div>
+
+  <div class="alert warn">
+    <div class="alert-title">Watch Out: Data Leakage</div>
+    <p>When creating lag features, always use <code>.shift()</code> so the model never sees "future" consumption during training. I made this mistake early and my validation accuracy was suspiciously high — a sure sign of leakage.</p>
+  </div>
+
+  <h2>Model Selection and Training</h2>
+
+  <p>I tested three approaches: a simple threshold rule (if days_of_stock &lt; lead_days, flag it), a Gradient Boosting Classifier, and a Random Forest. The threshold rule had reasonable recall but too many false positives — it was essentially flagging the same SKUs every day. Random Forest gave the best balance between precision and recall on the holdout set.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-lang">Python</span>
+      <span class="code-filename">03_train.py</span>
+    </div>
+    <pre><span class="py-import">from</span> sklearn.ensemble <span class="py-import">import</span> RandomForestClassifier
+<span class="py-import">from</span> sklearn.model_selection <span class="py-import">import</span> TimeSeriesSplit
+<span class="py-import">from</span> sklearn.metrics <span class="py-import">import</span> classification_report, precision_recall_curve
+<span class="py-import">from</span> sklearn.preprocessing <span class="py-import">import</span> LabelEncoder
+
+FEATURES = [
+    <span class="py-string">'qty_on_hand'</span>, <span class="py-string">'avg_consumption_7d'</span>, <span class="py-string">'avg_consumption_30d'</span>,
+    <span class="py-string">'days_of_stock'</span>, <span class="py-string">'stock_buffer_ratio'</span>,
+    <span class="py-string">'avg_lead_days'</span>, <span class="py-string">'month'</span>, <span class="py-string">'day_of_week'</span>,
+    <span class="py-string">'category_encoded'</span>
+]
+
+le = LabelEncoder()
+df[<span class="py-string">'category_encoded'</span>] = le.<span class="py-func">fit_transform</span>(df[<span class="py-string">'category_code'</span>])
+
+X = df[FEATURES]
+y = df[<span class="py-string">'target'</span>]
+
+<span class="py-comment"># Time-series split — NEVER use random shuffle on time-series data</span>
+tscv = <span class="py-class">TimeSeriesSplit</span>(n_splits=<span class="py-number">5</span>)
+
+model = <span class="py-class">RandomForestClassifier</span>(
+    n_estimators=<span class="py-number">200</span>,
+    max_depth=<span class="py-number">12</span>,
+    class_weight=<span class="py-string">'balanced'</span>,  <span class="py-comment"># handle class imbalance</span>
+    random_state=<span class="py-number">42</span>,
+    n_jobs=-<span class="py-number">1</span>
+)
+
+<span class="py-comment"># Train on all but last fold, validate on last</span>
+<span class="py-keyword">for</span> fold, (train_idx, val_idx) <span class="py-keyword">in</span> <span class="py-func">enumerate</span>(tscv.<span class="py-func">split</span>(X)):
+    X_train, X_val = X.<span class="py-func">iloc</span>[train_idx], X.<span class="py-func">iloc</span>[val_idx]
+    y_train, y_val = y.<span class="py-func">iloc</span>[train_idx], y.<span class="py-func">iloc</span>[val_idx]
+    model.<span class="py-func">fit</span>(X_train, y_train)
+    preds = model.<span class="py-func">predict</span>(X_val)
+    <span class="py-func">print</span>(<span class="py-string">f"Fold {fold+1}:"</span>, <span class="py-func">classification_report</span>(y_val, preds))</pre>
+  </div>
+
+  <h2>Results Across Model Comparison</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Model</th>
+        <th>Precision</th>
+        <th>Recall</th>
+        <th>F1 Score</th>
+        <th>False Positives / week</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Threshold Rule</td>
+        <td class="bad">0.51</td>
+        <td>0.79</td>
+        <td class="bad">0.62</td>
+        <td class="bad">~47</td>
+      </tr>
+      <tr>
+        <td>Gradient Boosting</td>
+        <td>0.74</td>
+        <td>0.71</td>
+        <td>0.72</td>
+        <td>~18</td>
+      </tr>
+      <tr>
+        <td>Random Forest ✓</td>
+        <td class="good">0.78</td>
+        <td class="good">0.76</td>
+        <td class="good">0.77</td>
+        <td class="good">~11</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Precision mattered more than recall here. False positives (unnecessary early orders) cost money and storage space. False negatives (missed stockouts) cost more — but the purchasing team had a manual fallback. So I tuned the classification threshold slightly toward precision.</p>
+
+  <h2>Deployment: Making It Actionable</h2>
+
+  <p>A model that lives in a Jupyter notebook saves no one any money. The final step was integrating predictions into our daily workflow. I wrote a script that runs each morning, scores all active SKUs, and outputs a prioritised reorder list — sorted by days of stock remaining — directly into the shared operations folder as a formatted Excel report.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-lang">Python</span>
+      <span class="code-filename">04_daily_score.py</span>
+    </div>
+    <pre"><span class="py-import">import</span> schedule
+<span class="py-import">import</span> time
+<span class="py-import">import</span> joblib
+
+model = joblib.<span class="py-func">load</span>(<span class="py-string">"models/rf_demand_v2.pkl"</span>)
+
+<span class="py-keyword">def</span> <span class="py-func">generate_daily_reorder_list</span>():
+    <span class="py-comment"># Pull today's snapshot</span>
+    df_today = <span class="py-func">get_today_snapshot</span>(engine)
+    df_today = <span class="py-func">engineer_features</span>(df_today)
+
+    <span class="py-comment"># Score with model</span>
+    df_today[<span class="py-string">'stockout_risk'</span>] = model.<span class="py-func">predict_proba</span>(
+        df_today[FEATURES]
+    )[:, <span class="py-number">1</span>]
+
+    <span class="py-comment"># Filter and sort by urgency</span>
+    alerts = (
+        df_today[df_today[<span class="py-string">'stockout_risk'</span>] > <span class="py-number">0.65</span>]
+        .<span class="py-func">sort_values</span>(<span class="py-string">'days_of_stock'</span>)
+        [[<span class="py-string">'sku_id'</span>, <span class="py-string">'product_name'</span>, <span class="py-string">'qty_on_hand'</span>,
+          <span class="py-string">'days_of_stock'</span>, <span class="py-string">'stockout_risk'</span>, <span class="py-string">'avg_lead_days'</span>]]
+    )
+
+    <span class="py-comment"># Export to shared ops folder</span>
+    today_str = pd.Timestamp.<span class="py-func">today</span>().<span class="py-func">strftime</span>(<span class="py-string">'%Y-%m-%d'</span>)
+    alerts.<span class="py-func">to_excel</span>(
+        <span class="py-string">f"//ops-share/reorder-alerts/alert_{today_str}.xlsx"</span>,
+        index=<span class="py-class">False</span>
+    )
+    <span class="py-func">print</span>(<span class="py-string">f"[{today_str}] {len(alerts)} SKUs flagged for reorder"</span>)
+
+<span class="py-comment"># Schedule for 07:00 daily</span>
+schedule.<span class="py-func">every</span>().day.<span class="py-func">at</span>(<span class="py-string">"07:00"</span>).<span class="py-func">do</span>(generate_daily_reorder_list)
+
+<span class="py-keyword">while</span> <span class="py-class">True</span>:
+    schedule.<span class="py-func">run_pending</span>()
+    time.<span class="py-func">sleep</span>(<span class="py-number">60</span>)</pre>
+  </div>
+
+  <hr class="divider">
+
+  <h2>What Actually Drove the $18,000 Saving</h2>
+
+  <p>The saving wasn't from perfect predictions — the model isn't perfect. It came from shifting purchasing from emergency channels (phone orders, courier freight, above-list prices) to standard purchase orders placed with 7–14 days lead time. That alone is the price difference. The model reduced emergency orders by 65% over the first 8 months of deployment. The cost differential per emergency order averaged around $55–80, across roughly 300–350 fewer emergency orders per year.</p>
+
+  <div class="pull-quote">
+    <p>"The model's job isn't to be right every time. Its job is to shift enough decisions from reactive to proactive that the cost difference compounds into real savings."</p>
+  </div>
+
+  <h2>What I Would Do Differently</h2>
+
+  <ol class="steps">
+    <li><strong>Model per SKU category sooner.</strong> I initially trained one model across all SKUs. Brake parts and engine components have very different demand patterns. Splitting by category_code improved F1 by ~4 points after retraining.</li>
+    <li><strong>Include supplier reliability as a feature.</strong> Some suppliers have variable lead times. A SKU flagged 10 days before threshold with a supplier who averages 12 days is already a problem. I added lead time variance in v2.</li>
+    <li><strong>Build the Excel output earlier.</strong> I initially delivered predictions as a CSV, which the purchasing team didn't adopt. Formatting the output as a colour-coded Excel report with priority tiers drove actual usage. Adoption is the metric that matters.</li>
+  </ol>
+
+  <p>The full code, including feature engineering and the trained model weights, is available on my GitHub. If you're working on a similar problem in supply chain or operations, feel free to open an issue or fork the repo.</p>
+
+  <div class="tags">
+    <span class="tag">Python</span>
+    <span class="tag">Machine Learning</span>
+    <span class="tag">pandas</span>
+    <span class="tag">scikit-learn</span>
+    <span class="tag">Supply Chain</span>
+    <span class="tag">Demand Forecasting</span>
+    <span class="tag">Random Forest</span>
+    <span class="tag">Data Science</span>
+  </div>
+
+</div>
+
+</body>
+</html>
