@@ -44,7 +44,7 @@ Welcome to my portfolio. This repository contains my technical projects and tech
 
 
 
-## About This Portfolio
+
 
 ## About This Portfolio
 
@@ -61,7 +61,7 @@ All projects in this portfolio come from real work in production environments:
 | AWS ETL Pipeline | 2024 | 2026 |
 | ArmorAI | 2023-2024 | 2026 |
 
-The metrics are real. The code is available in my other repositories.
+The metrics are real. The code is available in my repositories.
 
 
 *Lagos, Nigeria GMT+1 | Open to remote worldwide*
