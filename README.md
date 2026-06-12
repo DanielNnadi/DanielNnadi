@@ -9,7 +9,7 @@ Welcome to my portfolio. This repository contains my technical projects and tech
 
 ## Live Portfolio
 
-👉 [View my visual portfolio here](https://danielnnadi.github.io/portfolio)
+👉 [View my visual portfolio here] https://danielnnadi.github.io/DanielNnadi/
 
 ---
 
@@ -37,9 +37,11 @@ Welcome to my portfolio. This repository contains my technical projects and tech
 
 ## Where to Find Me
 
+## Where to find me
+
 - [LinkedIn](https://linkedin.com/in/danielnnadi)
 - [GitHub](https://github.com/danielnnadi)
-- [Portfolio](https://danielnnadi.github.io/portfolio)
+- [Portfolio](https://danielnnadi.github.io/DanielNnadi/)
 
 ---
 
