@@ -35,7 +35,6 @@ Welcome to my portfolio. This repository contains my technical projects and tech
 
 ---
 
-## Where to Find Me
 
 ## Where to find me
 
