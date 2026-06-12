@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daniel Nnadi | Data & Analytics Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1a1a2e;
+            background: #f5f5f7;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+        }
+        .subhead {
+            color: #475569;
+            font-size: 1.2rem;
+            border-bottom: 3px solid #3b82f6;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+        .contact {
+            margin-top: 1rem;
+            color: #3b82f6;
+            word-break: break-all;
+        }
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            color: #475569;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            margin: 2rem 0 1.5rem 0;
+            color: #0f172a;
+            border-left: 4px solid #3b82f6;
+            padding-left: 1rem;
+        }
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        .project-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 4px solid #3b82f6;
+        }
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+        .project-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+        }
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0.75rem 0;
+        }
+        .tech-tag {
+            background: #e2e8f0;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            color: #1e293b;
+        }
+        .project-desc {
+            color: #334155;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        .project-results {
+            background: #f1f5f9;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            margin: 0.75rem 0;
+        }
+        .project-results strong {
+            color: #3b82f6;
+        }
+        .links {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .links a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .links a:hover {
+            text-decoration: underline;
+        }
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .article-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-left: 4px solid #10b981;
+        }
+        .article-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+        }
+        .article-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0.75rem 0;
+        }
+        .article-tag {
+            background: #e2e8f0;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            color: #1e293b;
+        }
+        .about-section {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .about-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        .about-section th, .about-section td {
+            border: 1px solid #e2e8f0;
+            padding: 0.5rem;
+            text-align: left;
+        }
+        .about-section th {
+            background: #f1f5f9;
+        }
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+            color: #64748b;
+        }
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .stats { gap: 1rem; }
+            .stat-number { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Daniel Chukwuebuka Nnadi</h1>
+            <div class="subhead">Data Analyst | Technical Project Manager</div>
+            <div class="contact">
+                📧 nnadidaniel49@gmail.com | 🔗 linkedin.com/in/danielnnadi | 🐙 github.com/danielnnadi
+            </div>
+        </header>
+
+        <div class="stats">
+            <div class="stat"><div class="stat-number">82%</div><div class="stat-label">Faster Queries</div></div>
+            <div class="stat"><div class="stat-number">65%</div><div class="stat-label">Less Emergency Procurement</div></div>
+            <div class="stat"><div class="stat-number">200+</div><div class="stat-label">Manual Hours Eliminated</div></div>
+            <div class="stat"><div class="stat-number">95%</div><div class="stat-label">User Adoption</div></div>
+            <div class="stat"><div class="stat-number">10K+</div><div class="stat-label">Records Zero Errors</div></div>
+        </div>
+
+        <!-- Featured Technical Writing Section -->
+        <div class="section-title">✍️ Featured Technical Writing</div>
+        <div class="article-grid">
+            <div class="article-card">
+                <div class="article-title">How I Cut SQL Query Time from 45 Seconds to 8 Seconds</div>
+                <div class="article-tech"><span class="article-tag">SQL Server</span><span class="article-tag">Indexing</span><span class="article-tag">Query Tuning</span></div>
+                <div class="project-desc">Diagnosing a slow inventory query, redesigning indexes, eliminating correlated subqueries, and achieving 82% performance gain on 2.3M+ rows.</div>
+                <div class="links"><a href="#">📖 Read Article →</a></div>
+            </div>
+            <div class="article-card">
+                <div class="article-title">How I Built a Python Demand Forecasting Model That Saved $18,000</div>
+                <div class="article-tech"><span class="article-tag">Python</span><span class="article-tag">Prophet</span><span class="article-tag">scikit-learn</span></div>
+                <div class="project-desc">Random Forest model to predict stockout risk. Reduced emergency procurement by 65% using Python, pandas, and scikit-learn.</div>
+                <div class="links"><a href="#">📖 Read Article →</a></div>
+            </div>
+        </div>
+
+        <!-- Key Projects Section -->
+        <div class="section-title">🚀 Key Projects</div>
+        <div class="project-grid">
+
+            <!-- Existing Project: ArmorAI -->
+            <div class="project-card">
+                <div class="project-title">🛡️ ArmorAI Cybersecurity Platform</div>
+                <div class="project-tech"><span class="tech-tag">React</span><span class="tech-tag">Node.js</span><span class="tech-tag">AWS</span></div>
+                <div class="project-desc">Full-stack threat detection platform. Managed 2 freelance developers across 3 time zones.</div>
+                <div class="project-results"><strong>📊 Result:</strong> 1,000+ daily API events</div>
+                <div class="links"><a href="https://github.com/danielnnadi/armorai">🔗 GitHub Repo</a><a href="https://danielnnadi.github.io/Armorai">🌐 Live Demo</a></div>
+            </div>
+
+            <!-- Existing Project: dbt + Snowflake -->
+            <div class="project-card">
+                <div class="project-title">🔄 dbt + Snowflake Modernization</div>
+                <div class="project-tech"><span class="tech-tag">dbt</span><span class="tech-tag">Snowflake</span><span class="tech-tag">SQL</span></div>
+                <div class="project-desc">Rebuilt Excel reporting into dbt. Star schema, incremental models, 40+ data quality tests.</div>
+                <div class="project-results"><strong>📊 Result:</strong> 45min → 3min refresh on 2.3M+ rows</div>
+                <div class="links"><a href="https://github.com/danielnnadi/dbt-snowflake">🔗 GitHub Repo</a></div>
+            </div>
+
+            <!-- Existing Project: AWS ETL Pipeline -->
+            <div class="project-card">
+                <div class="project-title">☁️ AWS Cloud-Native ETL Pipeline</div>
+                <div class="project-tech"><span class="tech-tag">AWS Lambda</span><span class="tech-tag">S3</span><span class="tech-tag">RDS</span></div>
+                <div class="project-desc">End-to-end ETL using Lambda, S3, RDS, Power BI. Infrastructure as Code.</div>
+                <div class="project-results"><strong>📊 Result:</strong> 10,000+ daily records, sub-5min latency</div>
+                <div class="links"><a href="https://github.com/danielnnadi/aws-etl-pipeline">🔗 GitHub Repo</a></div>
+            </div>
+
+            <!-- Existing Project: Demand Forecasting -->
+            <div class="project-card">
+                <div class="project-title">📈 Demand Forecasting with Prophet</div>
+                <div class="project-tech"><span class="tech-tag">Python</span><span class="tech-tag">Prophet</span><span class="tech-tag">pandas</span></div>
+                <div class="project-desc">Demand forecasting model with cross-validation. Established procurement and data team cadence.</div>
+                <div class="project-results"><strong>📊 Result:</strong> 65% reduction in emergency procurement</div>
+                <div class="links"><a href="https://github.com/danielnnadi/demand-forecasting">🔗 GitHub Repo</a></div>
+            </div>
+
+            <!-- Existing Project: SQL Performance -->
+            <div class="project-card">
+                <div class="project-title">⚡ SQL Performance Optimization</div>
+                <div class="project-tech"><span class="tech-tag">SQL Server</span><span class="tech-tag">Indexing</span></div>
+                <div class="project-desc">Redesigned SQL architecture and indexing on 2.3M+ rows. Delivered 8 Power BI dashboards.</div>
+                <div class="project-results"><strong>📊 Result:</strong> 82% faster queries (45s → 8s)</div>
+                <div class="links"><a href="https://github.com/danielnnadi/sql-performance">🔗 GitHub Repo</a></div>
+            </div>
+
+            <!-- Existing Project: Government Migration -->
+            <div class="project-card">
+                <div class="project-title">🏛️ Government Data Migration</div>
+                <div class="project-tech"><span class="tech-tag">SQL Server</span><span class="tech-tag">ETL</span></div>
+                <div class="project-desc">Federal Ministry of Works. Migrated 10,000+ records across four directorates.</div>
+                <div class="project-results"><strong>📊 Result:</strong> Zero data loss, zero downtime, zero audit findings</div>
+                <div class="links"><a href="#">📧 Contact for access</a></div>
+            </div>
+
+            <!-- NEW Project 1: Inventory Analytics Platform -->
+            <div class="project-card">
+                <div class="project-title">📦 Inventory Analytics Platform</div>
+                <div class="project-tech"><span class="tech-tag">SQL Server</span><span class="tech-tag">Power BI</span><span class="tech-tag">Python</span></div>
+                <div class="project-desc">Led integration of 3 external vendors to build inventory platform. Defined API contracts and data schemas. Cut vendor feature list by 30% after user research showed data consistency mattered more.</div>
+                <div class="project-results"><strong>📊 Result:</strong> 95% user adoption in 30 days | 82% faster queries (45s → 8s)</div>
+                <div class="links"><a href="https://github.com/danielnnadi/inventory-analytics-platform">🔗 GitHub Repo</a></div>
+            </div>
+
+            <!-- NEW Project 2: Procurement Forecasting System -->
+            <div class="project-card">
+                <div class="project-title">📈 Procurement Forecasting System</div>
+                <div class="project-tech"><span class="tech-tag">Python</span><span class="tech-tag">Prophet</span><span class="tech-tag">pandas</span></div>
+                <div class="project-desc">Built demand forecasting model with cross-validation. Established procurement and data team review cadence.</div>
+                <div class="project-results"><strong>📊 Result:</strong> 65% reduction in emergency procurement (23 → 8 per month)</div>
+                <div class="links"><a href="https://github.com/danielnnadi/procurement-forecasting">🔗 GitHub Repo</a></div>
+            </div>
+
+            <!-- NEW Project 3: Supplier Intelligence Dashboard -->
+            <div class="project-card">
+                <div class="project-title">🏭 Supplier Intelligence Dashboard</div>
+                <div class="project-tech"><span class="tech-tag">Power BI</span><span class="tech-tag">SQL</span><span class="tech-tag">Lean Six Sigma</span></div>
+                <div class="project-desc">Led Lean Six Sigma process improvement across procurement and data teams. Built supplier performance tracking dashboard with real-time metrics.</div>
+                <div class="project-results"><strong>📊 Result:</strong> Supplier on-time delivery 87% → 98% | Manual effort 40 → 14 hours/week</div>
+                <div class="links"><a href="https://github.com/danielnnadi/supplier-intelligence-dashboard">🔗 GitHub Repo</a></div>
+            </div>
+
+            <!-- NEW Project 4: Executive KPI Dashboard -->
+            <div class="project-card">
+                <div class="project-title">📊 Executive KPI Dashboard</div>
+                <div class="project-tech"><span class="tech-tag">Power BI</span><span class="tech-tag">DAX</span><span class="tech-tag">SQL</span></div>
+                <div class="project-desc">Delivered 8 executive Power BI dashboards with defined SLAs. Managed SQL and Power BI adoption program for 12 users.</div>
+                <div class="project-results"><strong>📊 Result:</strong> Sub-10-second query time | 30% fewer support requests | 2 team members promoted</div>
+                <div class="links"><a href="https://github.com/danielnnadi/executive-kpi-dashboard">🔗 GitHub Repo</a></div>
+            </div>
+
+            <!-- NEW Project 5: Program Governance Dashboard -->
+            <div class="project-card">
+                <div class="project-title">🏛️ Program Governance Dashboard</div>
+                <div class="project-tech"><span class="tech-tag">Power BI</span><span class="tech-tag">SQL Server</span><span class="tech-tag">ETL</span></div>
+                <div class="project-desc">Federal Ministry of Works: Directed migration of 10,000+ records across 4 directorates. Coordinated legal, finance, operations, and compliance teams. Built compliance dashboards.</div>
+                <div class="project-results"><strong>📊 Result:</strong> Zero data loss, zero downtime, zero audit findings | Audit prep 3 weeks → 3 days</div>
+                <div class="links"><a href="https://github.com/danielnnadi/program-governance-dashboard">🔗 GitHub Repo</a></div>
+            </div>
+
+        </div>
+
+        <!-- About This Portfolio Section -->
+        <div class="about-section">
+            <h2>About This Portfolio</h2>
+            <p>All projects in this portfolio come from real work in production environments:</p>
+            <table>
+                <thead>
+                    <tr><th>Project</th><th>Completed</th><th>Uploaded to GitHub</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Inventory Analytics Platform</td><td>2024</td><td>2026</td></tr>
+                    <tr><td>Procurement Forecasting System</td><td>2024</td><td>2026</td></tr>
+                    <tr><td>Supplier Intelligence Dashboard</td><td>2024</td><td>2026</td></tr>
+                    <tr><td>Executive KPI Dashboard</td><td>2024-2025</td><td>2026</td></tr>
+                    <tr><td>Program Governance Dashboard</td><td>2022</td><td>2026</td></tr>
+                    <tr><td>dbt + Snowflake Modernization</td><td>2024</td><td>2026</td></tr>
+                    <tr><td>AWS ETL Pipeline</td><td>2024</td><td>2026</td></tr>
+                    <tr><td>ArmorAI</td><td>2023-2024</td><td>2026</td></tr>
+                </tbody>
+            </table>
+            <p>The metrics are real. The code is available in my repositories.</p>
+            <p>📍 Lagos, Nigeria GMT+1 | 🌍 Open to remote worldwide</p>
+        </div>
+
+        <footer>
+            <p>"Find the real constraint. It is almost never technical."</p>
+            <p><a href="https://github.com/danielnnadi" style="color:#3b82f6;">github.com/danielnnadi</a></p>
+        </footer>
+    </div>
+</body>
+</html>
