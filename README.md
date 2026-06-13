@@ -50,19 +50,6 @@ Welcome to my portfolio. This repository contains my technical projects and tech
 
 All projects in this portfolio come from real work in production environments:
 
-| Project | Completed | Uploaded to GitHub |
-|---------|-----------|-------------------|
-| Inventory Analytics Platform | 2024 | 2026 |
-| Procurement Forecasting System | 2024 | 2026 |
-| Supplier Intelligence Dashboard | 2024 | 2026 |
-| Executive KPI Dashboard | 2024-2025 | 2026 |
-| Program Governance Dashboard | 2022 | 2026 |
-| dbt + Snowflake Modernization | 2024 | 2026 |
-| AWS ETL Pipeline | 2024 | 2026 |
-| ArmorAI | 2023-2024 | 2026 |
-
-The metrics are real. The code is available in my repositories.
-
 
 *Lagos, Nigeria GMT+1 | Open to remote worldwide*
 
