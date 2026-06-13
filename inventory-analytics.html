@@ -29,7 +29,6 @@
         .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; background: #f1f5f9; padding: 1.5rem; border-radius: 0.5rem; margin: 1.5rem 0; text-align: center; }
         .metric-number { font-size: 1.8rem; font-weight: bold; color: #3b82f6; }
         .metric-label { font-size: 0.85rem; color: #475569; }
-        .diagram-placeholder { background: #f1f5f9; border: 2px dashed #cbd5e1; border-radius: 0.5rem; padding: 3rem; text-align: center; margin: 1.5rem 0; color: #64748b; }
         .tech-stack { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
         .tech-tag { background: #e2e8f0; padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.75rem; }
         .links { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
@@ -65,10 +64,18 @@
         </div>
         
         <div class="section">
-            <div class="section-title">Architectural Diagram</div>
-            <div class="diagram-placeholder">
-                📊 [INSERT INVENTORY PLATFORM ARCHITECTURE DIAGRAM HERE]<br>
-                <span style="font-size: 0.8rem;">Diagram will show: Vendors → API Contracts → SQL Database → Power BI → Users</span>
+            <div class="section-title">Architecture Overview</div>
+            <div style="background:#1e293b; color:#e2e8f0; padding:1.5rem; border-radius:0.5rem; font-family:monospace; font-size:0.9rem; line-height:2;">
+                <pre style="margin:0; color:#e2e8f0; background:transparent; font-family:monospace;">
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   Data      │────▶│  Processing │────▶│   Database  │────▶│  Analytics  │────▶│   Results   │
+│   Sources   │     │ API Design  │     │ SQL Server  │     │  Power BI   │────▶│   95%       │
+│  (3 Vendors)│     │ Validation  │     │  Inventory  │     │  Dashboard  │     │  Adoption   │
+└─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
+                </pre>
+                <p style="margin-top:1rem; font-size:0.8rem; color:#8b949e; text-align:center;">
+                Vendor APIs → API Contracts → SQL Database → Power BI → 95% User Adoption
+                </p>
             </div>
         </div>
         
