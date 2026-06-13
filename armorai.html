@@ -65,10 +65,18 @@
         </div>
         
         <div class="section">
-            <div class="section-title">Architecture</div>
-            <div style="text-align: center;">
-                <img src="images/architecture.png" alt="Architecture Diagram" style="max-width:100%; border-radius:0.5rem; box-shadow:0 2px 4px rgba(0,0,0,0.1);">
-                <p style="font-size:0.8rem; color:#64748b; margin-top:0.5rem;">Data pipeline architecture: Sources → Processing → Database → Analytics → Results</p>
+            <div class="section-title">Architecture Overview</div>
+            <div style="background:#1e293b; color:#e2e8f0; padding:1.5rem; border-radius:0.5rem; font-family:monospace; font-size:0.9rem; line-height:2;">
+                <pre style="margin:0; color:#e2e8f0; background:transparent; font-family:monospace;">
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   Data      │────▶│  Processing │────▶│   Database  │────▶│  Analytics  │────▶│   Results   │
+│   Sources   │     │   Node.js   │     │   AWS EC2   │     │    React    │     │ 1,000+      │
+│   (APIs)    │     │   Python    │     │  PostgreSQL │     │  Dashboards │     │ Events/Day  │
+└─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
+                </pre>
+                <p style="margin-top:1rem; font-size:0.8rem; color:#8b949e; text-align:center;">
+                User → React Frontend → Node.js API → AWS EC2 → Database → Live Dashboard
+                </p>
             </div>
         </div>
         
