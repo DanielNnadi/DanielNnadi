@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Analytics Platform | Daniel Nnadi</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1a1a2e;
+            background: #f5f5f7;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 1rem;
+            padding: 2.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 { font-size: 2rem; color: #0f172a; margin-bottom: 0.5rem; }
+        .back-link { display: inline-block; margin-bottom: 2rem; color: #3b82f6; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+        .section { margin: 2rem 0; }
+        .section-title { font-size: 1.4rem; font-weight: bold; color: #0f172a; border-left: 4px solid #3b82f6; padding-left: 1rem; margin-bottom: 1rem; }
+        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; background: #f1f5f9; padding: 1.5rem; border-radius: 0.5rem; margin: 1.5rem 0; text-align: center; }
+        .metric-number { font-size: 1.8rem; font-weight: bold; color: #3b82f6; }
+        .metric-label { font-size: 0.85rem; color: #475569; }
+        .diagram-placeholder { background: #f1f5f9; border: 2px dashed #cbd5e1; border-radius: 0.5rem; padding: 3rem; text-align: center; margin: 1.5rem 0; color: #64748b; }
+        .tech-stack { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
+        .tech-tag { background: #e2e8f0; padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.75rem; }
+        .links { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+        .btn { background: #3b82f6; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; text-decoration: none; font-size: 0.85rem; }
+        .btn-outline { background: white; color: #3b82f6; border: 1px solid #3b82f6; }
+        footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; text-align: center; font-size: 0.8rem; color: #64748b; }
+        ul { margin-left: 1.5rem; }
+        li { margin: 0.5rem 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Portfolio</a>
+        
+        <h1>📦 Inventory Analytics Platform</h1>
+        
+        <div class="tech-stack">
+            <span class="tech-tag">SQL Server</span>
+            <span class="tech-tag">Power BI</span>
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">REST APIs</span>
+        </div>
+        
+        <div class="metrics">
+            <div><div class="metric-number">95%</div><div class="metric-label">User Adoption in 30 Days</div></div>
+            <div><div class="metric-number">30%</div><div class="metric-label">Fewer Vendor Features</div></div>
+            <div><div class="metric-number">3</div><div class="metric-label">External Vendors</div></div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">The Problem</div>
+            <p>Defem Autocare needed an inventory platform. Three external vendors proposed 50+ features, but user research showed staff just wanted accurate, consistent data — not more features.</p>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Architectural Diagram</div>
+            <div class="diagram-placeholder">
+                📊 [INSERT INVENTORY PLATFORM ARCHITECTURE DIAGRAM HERE]<br>
+                <span style="font-size: 0.8rem;">Diagram will show: Vendors → API Contracts → SQL Database → Power BI → Users</span>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">The Solution</div>
+            <p>Conducted user research with 50+ staff members. Cut vendor feature list by 30% before development. Defined API contracts and SQL schemas first.</p>
+            <p style="margin-top: 1rem;">Led SQL architecture redesign and indexing. Delivered 8 Power BI executive dashboards with defined SLAs under 10 seconds.</p>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Results</div>
+            <ul>
+                <li><strong>User adoption:</strong> 95% within 30 days</li>
+                <li><strong>Vendor management:</strong> Cut feature list by 30% based on user research</li>
+                <li><strong>Performance:</strong> Queries from 45 seconds to 8 seconds</li>
+                <li><strong>Delivery:</strong> On time with clear API contracts</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Key Takeaway</div>
+            <p>User research before technical decisions saved 30% of development work. Data consistency mattered more to users than feature quantity.</p>
+        </div>
+        
+        <div class="links">
+            <a href="https://github.com/danielnnadi/inventory-analytics-platform" class="btn" target="_blank">🔗 View on GitHub</a>
+            <a href="index.html" class="btn btn-outline">🏠 Back to Portfolio</a>
+        </div>
+        
+        <footer>Daniel Nnadi | Data Analyst & Technical Project Manager</footer>
+    </div>
+</body>
+</html>
