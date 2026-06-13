@@ -68,7 +68,32 @@
         <div class="section">
             <div class="section-title">Architectural Diagram</div>
             <div class="diagram-placeholder">
-                📊 [INSERT ARMORAI ARCHITECTURE DIAGRAM HERE]<br>
+                📊 <div class="section">
+    <div class="section-title">Architecture</div>
+    <pre style="background:#1e293b; color:#e2e8f0; padding:1rem; border-radius:0.5rem; overflow-x:auto; font-family:monospace; font-size:0.8rem;">
+```mermaid
+flowchart LR
+    subgraph Frontend
+        A[React UI\nDashboard & Alerts]
+    end
+
+    subgraph Backend
+        B[Node.js API\nREST API]
+        C[AWS EC2\nDeployment]
+    end
+
+    subgraph Data
+        D[(Database\nUser Data & Events)]
+    end
+
+    subgraph Management
+        E[2 Developers\nUS, Europe, Nigeria]
+    end
+
+    A --> B
+    B --> C
+    C --> D
+    E -.-> B<br>
                 <span style="font-size: 0.8rem;">Diagram will show: User → React Frontend → Node.js API → AWS EC2 → Database</span>
             </div>
         </div>
