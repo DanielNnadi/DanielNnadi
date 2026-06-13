@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Performance Optimization | Daniel Nnadi</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1a1a2e;
+            background: #f5f5f7;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 1rem;
+            padding: 2.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 { font-size: 2rem; color: #0f172a; margin-bottom: 0.5rem; }
+        .back-link { display: inline-block; margin-bottom: 2rem; color: #3b82f6; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+        .section { margin: 2rem 0; }
+        .section-title { font-size: 1.4rem; font-weight: bold; color: #0f172a; border-left: 4px solid #3b82f6; padding-left: 1rem; margin-bottom: 1rem; }
+        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; background: #f1f5f9; padding: 1.5rem; border-radius: 0.5rem; margin: 1.5rem 0; text-align: center; }
+        .metric-number { font-size: 1.8rem; font-weight: bold; color: #3b82f6; }
+        .metric-label { font-size: 0.85rem; color: #475569; }
+        .diagram-placeholder { background: #f1f5f9; border: 2px dashed #cbd5e1; border-radius: 0.5rem; padding: 3rem; text-align: center; margin: 1.5rem 0; color: #64748b; }
+        .tech-stack { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
+        .tech-tag { background: #e2e8f0; padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.75rem; }
+        .links { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+        .btn { background: #3b82f6; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; text-decoration: none; font-size: 0.85rem; }
+        .btn-outline { background: white; color: #3b82f6; border: 1px solid #3b82f6; }
+        footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; text-align: center; font-size: 0.8rem; color: #64748b; }
+        ul { margin-left: 1.5rem; }
+        li { margin: 0.5rem 0; }
+        pre { background: #1e293b; color: #e2e8f0; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; font-family: monospace; font-size: 0.8rem; margin: 1rem 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Portfolio</a>
+        
+        <h1>⚡ SQL Performance Optimization</h1>
+        
+        <div class="tech-stack">
+            <span class="tech-tag">SQL Server</span>
+            <span class="tech-tag">Indexing</span>
+            <span class="tech-tag">Query Tuning</span>
+            <span class="tech-tag">Execution Plans</span>
+            <span class="tech-tag">Power BI</span>
+        </div>
+        
+        <div class="metrics">
+            <div><div class="metric-number">82%</div><div class="metric-label">Faster Queries</div></div>
+            <div><div class="metric-number">45s → 8s</div><div class="metric-label">Query Time</div></div>
+            <div><div class="metric-number">2.3M+</div><div class="metric-label">Rows Optimized</div></div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">The Problem</div>
+            <p>Inventory queries were taking 45 seconds to run. Real-time reporting was impossible. Analysts relied on morning snapshots because live queries were too slow.</p>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Architectural Diagram</div>
+            <div class="diagram-placeholder">
+                📊 [INSERT SQL PERFORMANCE ARCHITECTURE DIAGRAM HERE]<br>
+                <span style="font-size: 0.8rem;">Diagram will show: Before (full scans) → After (index seeks + covering indexes)</span>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">The Solution</div>
+            <p>Diagnosed issues using execution plans. Found correlated subqueries running 500+ times per query, implicit type conversions, and missing indexes.</p>
+            <p style="margin-top: 1rem;">Replaced correlated subqueries with CTEs, fixed type mismatches, and created composite covering indexes.</p>
+            
+            <pre><code>-- Before: 45 seconds
+SELECT * FROM inventory i
+WHERE (SELECT MAX(date) FROM orders o 
+       WHERE o.sku_id = i.sku_id) IS NOT NULL
+
+-- After: 8 seconds with CTE + index
+WITH latest_orders AS (
+    SELECT sku_id, MAX(date) as last_order
+    FROM orders GROUP BY sku_id
+)
+SELECT i.* FROM inventory i
+JOIN latest_orders lo ON i.sku_id = lo.sku_id</code></pre>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Results</div>
+            <ul>
+                <li><strong>Defem Autocare:</strong> 45 seconds → 8 seconds (82% faster)</li>
+                <li><strong>Federal Ministry of Works:</strong> 15+ minutes → 30 seconds (97% faster)</li>
+                <li><strong>Logical reads:</strong> 84,000 → 4,200 (94% reduction)</li>
+                <li><strong>Real-time reporting:</strong> Enabled for the first time</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Key Takeaway</div>
+            <p>Always read the execution plan before writing fixes. The most expensive queries are often not the complex ones — they're simple queries running against poorly designed schemas.</p>
+        </div>
+        
+        <div class="links">
+            <a href="https://github.com/danielnnadi/sql-performance" class="btn" target="_blank">🔗 View on GitHub</a>
+            <a href="index.html" class="btn btn-outline">🏠 Back to Portfolio</a>
+        </div>
+        
+        <footer>Daniel Nnadi | Data Analyst & Technical Project Manager</footer>
+    </div>
+</body>
+</html>
