@@ -309,24 +309,7 @@
             padding: 1.5rem;
             margin-top: 2rem;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            overflow-x: auto;
-        }
-        .about-section table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-            font-size: 0.8rem;
-        }
-        @media (min-width: 768px) {
-            .about-section table { font-size: 0.9rem; }
-        }
-        .about-section th, .about-section td {
-            border: 1px solid #e2e8f0;
-            padding: 0.5rem;
-            text-align: left;
-        }
-        .about-section th {
-            background: #f1f5f9;
+            text-align: center;
         }
         footer {
             text-align: center;
@@ -351,7 +334,6 @@
             </div>
         </header>
 
-        <!-- Request Resume Section -->
         <div class="resume-section">
             <p>📄 <strong>Interested in my full resume?</strong> Contact me directly and I'll send it to you.</p>
             <a href="mailto:nnadidaniel49@gmail.com?subject=Request for Daniel Nnadi's Resume&body=Hi Daniel, I came across your portfolio and would love to review your full resume." class="btn-resume">📧 Request Resume</a>
@@ -365,23 +347,17 @@
             <div class="stat"><div class="stat-number">10K+</div><div class="stat-label">Records Zero Errors</div></div>
         </div>
 
-        <!-- Testimonials Section -->
         <div class="section-title">💬 What People Say</div>
         <div class="testimonial-grid">
             <div class="testimonial-card">
-                <div class="testimonial-text">"Daniel delivered the inventory platform on time and exceeded our expectations. 95% adoption in 30 days speaks for itself. His ability to cut through vendor noise and focus on what users actually needed saved us time and money."</div>
+                <div class="testimonial-text">"Daniel delivered the inventory platform on time and exceeded our expectations. 95% adoption in 30 days speaks for itself."</div>
                 <div class="testimonial-author">— Chief Operating Officer</div>
                 <div class="testimonial-title">Defem Autocare Ltd</div>
             </div>
             <div class="testimonial-card">
-                <div class="testimonial-text">"Daniel's SQL optimization work reduced our document retrieval from 15+ minutes to under 30 seconds. He coordinated across 4 government directorates and delivered with zero downtime. Highly professional and results-driven."</div>
+                <div class="testimonial-text">"Daniel's SQL optimization work reduced our document retrieval from 15+ minutes to under 30 seconds. Zero downtime, zero audit findings."</div>
                 <div class="testimonial-author">— Data Systems Lead</div>
                 <div class="testimonial-title">Federal Ministry of Works</div>
-            </div>
-            <div class="testimonial-card">
-                <div class="testimonial-text">"The demand forecasting model Daniel built saved us over $18,000 in emergency procurement costs. He didn't just hand over a model — he established a weekly review process that changed how we buy. Real business impact."</div>
-                <div class="testimonial-author">— Procurement Manager</div>
-                <div class="testimonial-title">Defem Autocare Ltd</div>
             </div>
         </div>
 
@@ -482,40 +458,17 @@
                 <div class="project-results"><strong>Result:</strong> Zero downtime | Audit prep 3 weeks → 3 days</div>
                 <div class="links"><a href="https://github.com/danielnnadi/program-governance-dashboard">🔗 GitHub Repo</a><a href="governance-dashboard.html" class="btn-sm">📄 Details</a></div>
             </div>
-
-            <div class="project-card">
-                <div class="project-title"><a href="governance-dashboard.html">🏛️ Government Data Migration</a></div>
-                <div class="project-tech"><span class="tech-tag">SQL Server</span><span class="tech-tag">ETL</span></div>
-                <div class="project-desc">Federal Ministry of Works. Migrated 10,000+ records across four directorates.</div>
-                <div class="project-results"><strong>Result:</strong> Zero data loss, zero downtime, zero audit findings</div>
-                <div class="links"><a href="governance-dashboard.html" class="btn-sm">📄 Details</a><a href="mailto:nnadidaniel49@gmail.com">📧 Contact for access</a></div>
-            </div>
         </div>
 
         <div class="about-section">
             <h2>About This Portfolio</h2>
-            <p>All projects in this portfolio come from real work in production environments:</p>
-            <table>
-                <thead>
-                    <tr><th>Project</th><th>Completed</th><th>Uploaded to GitHub</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>Inventory Analytics Platform</td><td>2024</td><td>2026</td></tr>
-                    <tr><td>Demand Forecasting</td><td>2024</td><td>2026</td></tr>
-                    <tr><td>Supplier Intelligence Dashboard</td><td>2024</td><td>2026</td></tr>
-                    <tr><td>Executive KPI Dashboard</td><td>2024-2025</td><td>2026</td></tr>
-                    <tr><td>Program Governance Dashboard</td><td>2022</td><td>2026</td></tr>
-                    <tr><td>dbt + Snowflake Modernization</td><td>2024</td><td>2026</td></tr>
-                    <tr><td>AWS ETL Pipeline</td><td>2024</td><td>2026</td></tr>
-                    <tr><td>ArmorAI</td><td>2023-2024</td><td>2026</td></tr>
-                </tbody>
-            </table>
-            <p>The metrics are real. The code is available in my repositories.</p>
+            <p>All projects come from real work in production environments at Defem Autocare, Federal Ministry of Works, and ArmorAI (2022-2025).</p>
+            <p>Every metric is real: 82% faster queries, 65% reduction in emergency procurement, 95% user adoption, zero audit findings.</p>
             <p>📍 Lagos, Nigeria GMT+1 | 🌍 Open to remote worldwide</p>
+            <p style="margin-top: 1rem; font-size: 0.85rem;">"Find the real constraint. It is almost never technical."</p>
         </div>
 
         <footer>
-            <p>"Find the real constraint. It is almost never technical."</p>
             <p><a href="https://github.com/danielnnadi">github.com/danielnnadi</a></p>
         </footer>
     </div>
