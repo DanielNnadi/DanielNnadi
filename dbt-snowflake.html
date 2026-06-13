@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>dbt + Snowflake Modernization | Daniel Nnadi</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -11,32 +11,102 @@
             line-height: 1.6;
             color: #1a1a2e;
             background: #f5f5f7;
-            padding: 2rem;
+            padding: 1rem;
+        }
+        @media (min-width: 768px) {
+            body { padding: 2rem; }
         }
         .container {
             max-width: 900px;
             margin: 0 auto;
             background: white;
             border-radius: 1rem;
-            padding: 2.5rem;
+            padding: 1.5rem;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        h1 { font-size: 2rem; color: #0f172a; margin-bottom: 0.5rem; }
-        .back-link { display: inline-block; margin-bottom: 2rem; color: #3b82f6; text-decoration: none; }
+        @media (min-width: 768px) {
+            .container { padding: 2.5rem; }
+        }
+        h1 { font-size: 1.6rem; color: #0f172a; margin-bottom: 0.5rem; }
+        @media (min-width: 768px) {
+            h1 { font-size: 2rem; }
+        }
+        .back-link { display: inline-block; margin-bottom: 1.5rem; color: #3b82f6; text-decoration: none; }
         .back-link:hover { text-decoration: underline; }
-        .section { margin: 2rem 0; }
-        .section-title { font-size: 1.4rem; font-weight: bold; color: #0f172a; border-left: 4px solid #3b82f6; padding-left: 1rem; margin-bottom: 1rem; }
-        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; background: #f1f5f9; padding: 1.5rem; border-radius: 0.5rem; margin: 1.5rem 0; text-align: center; }
-        .metric-number { font-size: 1.8rem; font-weight: bold; color: #3b82f6; }
-        .metric-label { font-size: 0.85rem; color: #475569; }
+        .section { margin: 1.5rem 0; }
+        .section-title { font-size: 1.2rem; font-weight: bold; color: #0f172a; border-left: 4px solid #3b82f6; padding-left: 1rem; margin-bottom: 1rem; }
+        @media (min-width: 768px) {
+            .section-title { font-size: 1.4rem; }
+        }
+        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; background: #f1f5f9; padding: 1rem; border-radius: 0.5rem; margin: 1.5rem 0; text-align: center; }
+        @media (min-width: 768px) {
+            .metrics { padding: 1.5rem; }
+        }
+        .metric-number { font-size: 1.4rem; font-weight: bold; color: #3b82f6; }
+        @media (min-width: 768px) {
+            .metric-number { font-size: 1.8rem; }
+        }
+        .metric-label { font-size: 0.7rem; color: #475569; }
+        @media (min-width: 768px) {
+            .metric-label { font-size: 0.85rem; }
+        }
         .tech-stack { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
-        .tech-tag { background: #e2e8f0; padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.75rem; }
-        .links { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
-        .btn { background: #3b82f6; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; text-decoration: none; font-size: 0.85rem; }
+        .tech-tag { background: #e2e8f0; padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.7rem; }
+        @media (min-width: 768px) {
+            .tech-tag { font-size: 0.75rem; }
+        }
+        .links { display: flex; gap: 0.8rem; margin-top: 2rem; flex-wrap: wrap; }
+        .btn { background: #3b82f6; color: white; padding: 0.5rem 0.8rem; border-radius: 0.5rem; text-decoration: none; font-size: 0.8rem; display: inline-block; }
         .btn-outline { background: white; color: #3b82f6; border: 1px solid #3b82f6; }
-        footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; text-align: center; font-size: 0.8rem; color: #64748b; }
-        ul { margin-left: 1.5rem; }
+        footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; text-align: center; font-size: 0.7rem; color: #64748b; }
+        ul { margin-left: 1.2rem; }
         li { margin: 0.5rem 0; }
+        @media (min-width: 768px) {
+            ul { margin-left: 1.5rem; }
+        }
+        .arch-box {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: monospace;
+            font-size: 0.75rem;
+            overflow-x: auto;
+        }
+        @media (min-width: 768px) {
+            .arch-box { padding: 1.5rem; font-size: 0.85rem; }
+        }
+        .arch-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .arch-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .arch-item {
+            background: #0f172a;
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.5rem;
+            white-space: nowrap;
+        }
+        .arch-arrow {
+            color: #3b82f6;
+            font-size: 1rem;
+        }
+        .arch-desc {
+            margin-top: 0.8rem;
+            font-size: 0.7rem;
+            color: #8b949e;
+            text-align: center;
+        }
+        @media (min-width: 768px) {
+            .arch-desc { font-size: 0.8rem; }
+        }
     </style>
 </head>
 <body>
@@ -66,17 +136,23 @@
         
         <div class="section">
             <div class="section-title">Architecture Overview</div>
-            <div style="background:#1e293b; color:#e2e8f0; padding:1.5rem; border-radius:0.5rem; font-family:monospace; font-size:0.9rem; line-height:2;">
-                <pre style="margin:0; color:#e2e8f0; background:transparent; font-family:monospace;">
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Data      │────▶│  Processing │────▶│   Database  │────▶│  Analytics  │────▶│   Results   │
-│   Sources   │     │    dbt      │────▶│  Snowflake  │────▶│  Power BI   │────▶│ 3min Refresh│
-│   (Excel)   │     │   Models    │     │   Warehouse │     │  Dashboard  │     │ 40+ Tests   │
-└─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
-                </pre>
-                <p style="margin-top:1rem; font-size:0.8rem; color:#8b949e; text-align:center;">
-                Excel Reports → dbt Models → Snowflake → Power BI → Automated Dashboards
-                </p>
+            <div class="arch-box">
+                <div class="arch-flow">
+                    <div class="arch-row">
+                        <span class="arch-item">📊 Excel Reports</span>
+                        <span class="arch-arrow">→</span>
+                        <span class="arch-item">⚙️ dbt Models</span>
+                        <span class="arch-arrow">→</span>
+                        <span class="arch-item">💾 Snowflake</span>
+                        <span class="arch-arrow">→</span>
+                        <span class="arch-item">📈 Power BI</span>
+                        <span class="arch-arrow">→</span>
+                        <span class="arch-item">🎯 3min Refresh</span>
+                    </div>
+                    <div class="arch-desc">
+                        Excel (45min) → dbt → Snowflake → Power BI (3min) → 40+ Data Quality Tests
+                    </div>
+                </div>
             </div>
         </div>
         
