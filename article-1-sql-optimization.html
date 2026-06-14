@@ -440,9 +440,9 @@
     </div>
   </div>
 
-  <p class="drop-cap">When I joined the data team at an automotive parts company, one of the first things I noticed was that the inventory query everyone relied on — the one that pulled stock levels, reorder flags, and supplier status across 500+ SKUs — took 45 seconds to run. Every time. It was so slow that analysts had built workarounds: pulling data in the morning and working from yesterday's snapshot. Real-time decision-making was effectively impossible.</p>
+  <p class="drop-cap">When I joined the data team at an automotive parts company, one of the first things I noticed was that the inventory query everyone relied on - the one that pulled stock levels, reorder flags, and supplier status across 500+ SKUs - took 45 seconds to run. Every time. It was so slow that analysts had built workarounds: pulling data in the morning and working from yesterday's snapshot. Real-time decision-making was effectively impossible.</p>
 
-  <p>This is the story of how I diagnosed that problem, redesigned the indexing strategy and schema, and brought that query down to 8 seconds — without touching a single line of application code.</p>
+  <p>This is the story of how I diagnosed that problem, redesigned the indexing strategy and schema, and brought that query down to 8 seconds - without touching a single line of application code.</p>
 
   <div class="stat-row">
     <div class="stat-cell">
@@ -461,24 +461,24 @@
 
   <h2>The Problem: What Was Actually Happening</h2>
 
-  <p>The database was a SQL Server instance with a central <code>inventory</code> table, a <code>suppliers</code> table, a <code>purchase_orders</code> table, and a <code>stock_movements</code> table. The query joining all four was doing a full table scan on every execution — I could see this immediately in the execution plan.</p>
+  <p>The database was a SQL Server instance with a central <code>inventory</code> table, a <code>suppliers</code> table, a <code>purchase_orders</code> table, and a <code>stock_movements</code> table. The query joining all four was doing a full table scan on every execution - I could see this immediately in the execution plan.</p>
 
   <p>There were a few compounding issues:</p>
 
   <ol class="steps">
-    <li><strong>No composite indexes</strong> — The <code>inventory</code> table had a primary key index on <code>sku_id</code>, but the query was filtering heavily on <code>warehouse_id</code> and <code>category_code</code> together. Neither had an index. Every filter was a full scan.</li>
-    <li><strong>Implicit type conversions</strong> — The join between <code>purchase_orders</code> and <code>inventory</code> was comparing a <code>VARCHAR</code> column to an <code>INT</code> column. SQL Server was silently casting on every row comparison. This alone added ~8 seconds.</li>
-    <li><strong>Redundant subqueries in SELECT</strong> — A correlated subquery was running inside the <code>SELECT</code> clause to calculate last delivery date per SKU. It was executing once per row — 500+ times per query run.</li>
-    <li><strong>No covering index for the reporting columns</strong> — Even with better filtering, the engine was going back to the base table for every column not in the index, causing excessive key lookups.</li>
+    <li><strong>No composite indexes</strong> - The <code>inventory</code> table had a primary key index on <code>sku_id</code>, but the query was filtering heavily on <code>warehouse_id</code> and <code>category_code</code> together. Neither had an index. Every filter was a full scan.</li>
+    <li><strong>Implicit type conversions</strong> - The join between <code>purchase_orders</code> and <code>inventory</code> was comparing a <code>VARCHAR</code> column to an <code>INT</code> column. SQL Server was silently casting on every row comparison. This alone added about 8 seconds.</li>
+    <li><strong>Redundant subqueries in SELECT</strong> - A correlated subquery was running inside the <code>SELECT</code> clause to calculate last delivery date per SKU. It was executing once per row - 500+ times per query run.</li>
+    <li><strong>No covering index for the reporting columns</strong> - Even with better filtering, the engine was going back to the base table for every column not in the index, causing excessive key lookups.</li>
   </ol>
 
   <div class="pull-quote">
-    <p>"The most expensive queries are often not the complex ones — they're the simple ones running against a schema that was never designed for the way the data is actually queried."</p>
+    <p>"The most expensive queries are often not the complex ones - they're the simple ones running against a schema that was never designed for the way the data is actually queried."</p>
   </div>
 
   <h2>Step 1: Read the Execution Plan Properly</h2>
 
-  <p>Before touching anything, I ran the query with <code>SET STATISTICS IO ON</code> and <code>SET STATISTICS TIME ON</code> and captured the execution plan. This is non-negotiable — if you're tuning SQL without looking at the execution plan, you're guessing.</p>
+  <p>Before touching anything, I ran the query with <code>SET STATISTICS IO ON</code> and <code>SET STATISTICS TIME ON</code> and captured the execution plan. This is non-negotiable - if you're tuning SQL without looking at the execution plan, you're guessing.</p>
 
   <div class="code-block">
     <div class="code-header">
@@ -504,7 +504,7 @@
 
   <h2>Step 2: Eliminate the Correlated Subquery</h2>
 
-  <p>The original query looked roughly like this — the correlated subquery was the biggest offender:</p>
+  <p>The original query looked roughly like this - the correlated subquery was the biggest offender:</p>
 
   <div class="code-block">
     <div class="code-header">
@@ -535,7 +535,7 @@
       <div class="code-dot green"></div>
       <span class="code-label">SQL · After (Fast)</span>
     </div>
-    <pre><span class="sql-comment">-- AFTER: Single aggregation join — runs once total</span>
+    <pre><span class="sql-comment">-- AFTER: Single aggregation join - runs once total</span>
 <span class="sql-keyword">WITH</span> latest_deliveries <span class="sql-keyword">AS</span> (
     <span class="sql-keyword">SELECT</span>
         sku_id,
@@ -555,7 +555,7 @@
   <span class="sql-keyword">AND</span> i.category_code = <span class="sql-string">'BRAKE'</span>;</pre>
   </div>
 
-  <p>This change alone dropped execution time from 45 seconds to around 28 seconds. Progress — but still not good enough.</p>
+  <p>This change alone dropped execution time from 45 seconds to around 28 seconds. Progress - but still not good enough.</p>
 
   <h2>Step 3: Fix the Type Mismatch</h2>
 
@@ -563,12 +563,12 @@
 
   <div class="insight-box">
     <div class="insight-label">Key Lesson</div>
-    <p>Implicit type conversions prevent SQL Server from using indexes on the converted column. Always verify that joined columns share identical data types — check with <code>INFORMATION_SCHEMA.COLUMNS</code> before writing joins on any table you didn't design yourself.</p>
+    <p>Implicit type conversions prevent SQL Server from using indexes on the converted column. Always verify that joined columns share identical data types - check with <code>INFORMATION_SCHEMA.COLUMNS</code> before writing joins on any table you didn't design yourself.</p>
   </div>
 
   <h2>Step 4: Redesign the Indexes</h2>
 
-  <p>This was the highest-leverage change. I created a composite index on the two columns most commonly used together in <code>WHERE</code> clauses, and added the reporting columns as <code>INCLUDE</code>d columns to create a covering index — meaning the engine never needs to go back to the base table.</p>
+  <p>This was the highest-leverage change. I created a composite index on the two columns most commonly used together in <code>WHERE</code> clauses, and added the reporting columns as <code>INCLUDE</code>d columns to create a covering index - meaning the engine never needs to go back to the base table.</p>
 
   <div class="code-block">
     <div class="code-header">
@@ -582,7 +582,7 @@
 <span class="sql-keyword">ON</span> inventory;
 
 <span class="sql-comment">-- Create composite index on filter columns</span>
-<span class="sql-comment">-- INCLUDE covers the SELECT columns → no key lookups</span>
+<span class="sql-comment">-- INCLUDE covers the SELECT columns - no key lookups</span>
 <span class="sql-keyword">CREATE NONCLUSTERED INDEX</span> IX_inventory_warehouse_category
 <span class="sql-keyword">ON</span> inventory (warehouse_id, category_code)
 <span class="sql-keyword">INCLUDE</span> (sku_id, product_name, qty_on_hand, reorder_threshold);
@@ -602,8 +602,8 @@
       <div class="compare-label before">Before</div>
       <ul>
         <li>Query time <span class="bad">45 seconds</span></li>
-        <li>Logical reads <span class="bad">~84,000</span></li>
-        <li>Subquery executions <span class="bad">512×</span></li>
+        <li>Logical reads <span class="bad">approximately 84,000</span></li>
+        <li>Subquery executions <span class="bad">512 times</span></li>
         <li>Index seeks <span class="bad">0 (full scans)</span></li>
         <li>Type conversions <span class="bad">Per row</span></li>
       </ul>
@@ -612,7 +612,7 @@
       <div class="compare-label after">After</div>
       <ul>
         <li>Query time <span class="good">8 seconds</span></li>
-        <li>Logical reads <span class="good">~4,200</span></li>
+        <li>Logical reads <span class="good">approximately 4,200</span></li>
         <li>Subquery executions <span class="good">0 (CTE)</span></li>
         <li>Index seeks <span class="good">Covering index</span></li>
         <li>Type conversions <span class="good">Eliminated</span></li>
@@ -627,13 +627,13 @@
   <p>Three things I learned from this that I apply to every database I touch now:</p>
 
   <ol class="steps">
-    <li><strong>Read the execution plan before writing a single fix.</strong> You cannot optimize what you haven't measured. The plan tells you exactly where the cost is — don't guess.</li>
+    <li><strong>Read the execution plan before writing a single fix.</strong> You cannot optimize what you haven't measured. The plan tells you exactly where the cost is - don't guess.</li>
     <li><strong>Correlated subqueries in SELECT are almost always wrong.</strong> If you're selecting a computed value that depends on the current row, you can almost always replace it with a CTE or derived table that runs once.</li>
     <li><strong>Design indexes for your queries, not your tables.</strong> An index on a single column is often useless if your queries always filter on two columns together. Composite indexes + INCLUDE columns change everything.</li>
   </ol>
 
   <div class="pull-quote">
-    <p>"An 82% reduction in query time is not magic — it's just understanding what the database engine is actually doing, and removing the unnecessary work."</p>
+    <p>"An 82% reduction in query time is not magic - it's just understanding what the database engine is actually doing, and removing the unnecessary work."</p>
   </div>
 
   <p>The full query pattern and index design are available in my GitHub repository. If you're working on a similar inventory or supply chain database, I'd be happy to discuss your specific schema in the comments.</p>
