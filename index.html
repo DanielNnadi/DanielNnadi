@@ -64,6 +64,42 @@
         .contact a:hover {
             text-decoration: underline;
         }
+        .resume-section {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-radius: 1rem;
+            color: white;
+        }
+        .resume-section p {
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        @media (min-width: 768px) {
+            .resume-section p { font-size: 1rem; }
+        }
+        .btn-resume {
+            background: white;
+            color: #3b82f6;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            transition: transform 0.2s;
+            margin: 0.25rem;
+        }
+        .btn-resume:hover {
+            transform: scale(1.02);
+            background: #f8fafc;
+        }
+        .resume-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
         .stats {
             display: flex;
             flex-wrap: wrap;
@@ -274,35 +310,6 @@
             color: #64748b;
             font-style: normal;
         }
-        .resume-section {
-            text-align: center;
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            border-radius: 1rem;
-            color: white;
-        }
-        .resume-section p {
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-        }
-        @media (min-width: 768px) {
-            .resume-section p { font-size: 1rem; }
-        }
-        .btn-resume {
-            background: white;
-            color: #3b82f6;
-            padding: 0.6rem 1.2rem;
-            border-radius: 0.5rem;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-block;
-            transition: transform 0.2s;
-        }
-        .btn-resume:hover {
-            transform: scale(1.02);
-            background: #f8fafc;
-        }
         .about-section {
             background: white;
             border-radius: 1rem;
@@ -335,13 +342,13 @@
         </header>
 
         <div class="resume-section">
-    <p>📄 <strong>Download my CV</strong></p>
-    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        <a href="Daniel_Nnadi_TPM_CV.pdf" class="btn-resume" download>📄 Technical Project Manager / Program Manager</a>
-        <a href="Daniel_Nnadi_Data_Analyst_CV.pdf" class="btn-resume" download>📄 Data Analyst / BI Analyst</a>
-    </div>
-    <p style="font-size:0.8rem; margin-top:0.5rem;">Choose the CV that matches your role</p>
-</div>
+            <p>📄 <strong>Download my Resume</strong></p>
+            <div class="resume-buttons">
+                <a href="Daniel_Nnadi_TPM_Resume.pdf" class="btn-resume" download>📄 Technical Project Manager / Program Manager</a>
+                <a href="Daniel_Nnadi_Data_Analyst_Resume.pdf" class="btn-resume" download>📄 Data Analyst / BI Analyst</a>
+            </div>
+            <p style="font-size:0.8rem; margin-top:0.5rem;">Choose the resume that matches your role</p>
+        </div>
 
         <div class="stats">
             <div class="stat"><div class="stat-number">82%</div><div class="stat-label">Faster Queries</div></div>
@@ -354,7 +361,7 @@
         <div class="section-title">💬 What People Say</div>
         <div class="testimonial-grid">
             <div class="testimonial-card">
-                <div class="testimonial-text">"Daniel delivered the inventory platform on time and exceeded our expectations. 95% adoption in 30 days speaks for itself."</div>
+                <div class="testimonial-text">"Daniel delivered the inventory platform on time and exceeded our expectations. 95 percent adoption in 30 days speaks for itself."</div>
                 <div class="testimonial-author">— Chief Operating Officer</div>
                 <div class="testimonial-title">Defem Autocare Ltd</div>
             </div>
