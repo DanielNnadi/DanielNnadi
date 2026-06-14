@@ -432,9 +432,9 @@
     <span class="badge case">Supply Chain</span>
   </div>
 
-  <p>Emergency procurement is expensive. Not just financially — it's disruptive. When a part runs out unexpectedly, everything stops: you're calling suppliers at the last minute, paying premium prices, and watching operational timelines slip. At the automotive parts company where I work, this was happening regularly across our 500+ SKU inventory.</p>
+  <p>Emergency procurement is expensive. Not just financially - it's disruptive. When a part runs out unexpectedly, everything stops: you're calling suppliers at the last minute, paying premium prices, and watching operational timelines slip. At the automotive parts company where I work, this was happening regularly across our 500+ SKU inventory.</p>
 
-  <p>The root cause wasn't bad purchasing decisions. It was <em>reactive</em> purchasing decisions — we were restocking after stock hit zero rather than before. I was asked to look at whether data could help. This is what I built, what I learned, and what it saved.</p>
+  <p>The root cause wasn't bad purchasing decisions. It was <em>reactive</em> purchasing decisions - we were restocking after stock hit zero rather than before. I was asked to look at whether data could help. This is what I built, what I learned, and what it saved.</p>
 
   <div class="stat-grid">
     <div class="stat-cell">
@@ -453,9 +453,9 @@
 
   <h2>Understanding the Problem First</h2>
 
-  <p>Before writing a single line of Python, I spent time understanding the procurement workflow. Emergency orders were being triggered when warehouse staff noticed a part was nearly gone — by which point the lead time from suppliers meant we'd already have a gap. The question wasn't "can we predict demand?" but specifically: "can we predict demand early enough to order within normal lead times?"</p>
+  <p>Before writing a single line of Python, I spent time understanding the procurement workflow. Emergency orders were being triggered when warehouse staff noticed a part was nearly gone - by which point the lead time from suppliers meant we'd already have a gap. The question wasn't "can we predict demand?" but specifically: "can we predict demand early enough to order within normal lead times?"</p>
 
-  <p>That reframing was important. I wasn't trying to build a state-of-the-art forecasting engine. I was trying to predict, for each SKU, whether stock would fall below the reorder threshold within the next 14 days — early enough for a standard purchase order to work.</p>
+  <p>That reframing was important. I wasn't trying to build a state-of-the-art forecasting engine. I was trying to predict, for each SKU, whether stock would fall below the reorder threshold within the next 14 days - early enough for a standard purchase order to work.</p>
 
   <div class="alert">
     <div class="alert-title">Design Principle</div>
@@ -464,7 +464,7 @@
 
   <h2>The Data</h2>
 
-  <p>I pulled 13 months of stock movement data from our SQL inventory database — daily snapshots of quantity on hand per SKU, combined with purchase order history, supplier lead times, and sales records. After cleaning, I had roughly 195,000 rows across 512 SKUs.</p>
+  <p>I pulled 13 months of stock movement data from our SQL inventory database - daily snapshots of quantity on hand per SKU, combined with purchase order history, supplier lead times, and sales records. After cleaning, I had roughly 195,000 rows across 512 SKUs.</p>
 
   <div class="code-block">
     <div class="code-header">
@@ -556,12 +556,12 @@ df = <span class="py-func">engineer_features</span>(df)</pre>
 
   <div class="alert warn">
     <div class="alert-title">Watch Out: Data Leakage</div>
-    <p>When creating lag features, always use <code>.shift()</code> so the model never sees "future" consumption during training. I made this mistake early and my validation accuracy was suspiciously high — a sure sign of leakage.</p>
+    <p>When creating lag features, always use <code>.shift()</code> so the model never sees "future" consumption during training. I made this mistake early and my validation accuracy was suspiciously high - a sure sign of leakage.</p>
   </div>
 
   <h2>Model Selection and Training</h2>
 
-  <p>I tested three approaches: a simple threshold rule (if days_of_stock &lt; lead_days, flag it), a Gradient Boosting Classifier, and a Random Forest. The threshold rule had reasonable recall but too many false positives — it was essentially flagging the same SKUs every day. Random Forest gave the best balance between precision and recall on the holdout set.</p>
+  <p>I tested three approaches: a simple threshold rule (if days_of_stock &lt; lead_days, flag it), a Gradient Boosting Classifier, and a Random Forest. The threshold rule had reasonable recall but too many false positives - it was essentially flagging the same SKUs every day. Random Forest gave the best balance between precision and recall on the holdout set.</p>
 
   <div class="code-block">
     <div class="code-header">
@@ -586,7 +586,7 @@ df[<span class="py-string">'category_encoded'</span>] = le.<span class="py-func"
 X = df[FEATURES]
 y = df[<span class="py-string">'target'</span>]
 
-<span class="py-comment"># Time-series split — NEVER use random shuffle on time-series data</span>
+<span class="py-comment"># Time-series split - NEVER use random shuffle on time-series data</span>
 tscv = <span class="py-class">TimeSeriesSplit</span>(n_splits=<span class="py-number">5</span>)
 
 model = <span class="py-class">RandomForestClassifier</span>(
@@ -624,30 +624,30 @@ model = <span class="py-class">RandomForestClassifier</span>(
         <td class="bad">0.51</td>
         <td>0.79</td>
         <td class="bad">0.62</td>
-        <td class="bad">~47</td>
+        <td class="bad">approximately 47</td>
       </tr>
       <tr>
         <td>Gradient Boosting</td>
         <td>0.74</td>
         <td>0.71</td>
         <td>0.72</td>
-        <td>~18</td>
+        <td>approximately 18</td>
       </tr>
       <tr>
         <td>Random Forest ✓</td>
         <td class="good">0.78</td>
         <td class="good">0.76</td>
         <td class="good">0.77</td>
-        <td class="good">~11</td>
+        <td class="good">approximately 11</td>
       </tr>
     </tbody>
   </table>
 
-  <p>Precision mattered more than recall here. False positives (unnecessary early orders) cost money and storage space. False negatives (missed stockouts) cost more — but the purchasing team had a manual fallback. So I tuned the classification threshold slightly toward precision.</p>
+  <p>Precision mattered more than recall here. False positives (unnecessary early orders) cost money and storage space. False negatives (missed stockouts) cost more - but the purchasing team had a manual fallback. So I tuned the classification threshold slightly toward precision.</p>
 
   <h2>Deployment: Making It Actionable</h2>
 
-  <p>A model that lives in a Jupyter notebook saves no one any money. The final step was integrating predictions into our daily workflow. I wrote a script that runs each morning, scores all active SKUs, and outputs a prioritised reorder list — sorted by days of stock remaining — directly into the shared operations folder as a formatted Excel report.</p>
+  <p>A model that lives in a Jupyter notebook saves no one any money. The final step was integrating predictions into our daily workflow. I wrote a script that runs each morning, scores all active SKUs, and outputs a prioritised reorder list - sorted by days of stock remaining - directly into the shared operations folder as a formatted Excel report.</p>
 
   <div class="code-block">
     <div class="code-header">
@@ -698,7 +698,7 @@ schedule.<span class="py-func">every</span>().day.<span class="py-func">at</span
 
   <h2>What Actually Drove the $18,000 Saving</h2>
 
-  <p>The saving wasn't from perfect predictions — the model isn't perfect. It came from shifting purchasing from emergency channels (phone orders, courier freight, above-list prices) to standard purchase orders placed with 7–14 days lead time. That alone is the price difference. The model reduced emergency orders by 65% over the first 8 months of deployment. The cost differential per emergency order averaged around $55–80, across roughly 300–350 fewer emergency orders per year.</p>
+  <p>The saving wasn't from perfect predictions - the model isn't perfect. It came from shifting purchasing from emergency channels (phone orders, courier freight, above-list prices) to standard purchase orders placed with 7-14 days lead time. That alone is the price difference. The model reduced emergency orders by 65% over the first 8 months of deployment. The cost differential per emergency order averaged around $55-80, across roughly 300-350 fewer emergency orders per year.</p>
 
   <div class="pull-quote">
     <p>"The model's job isn't to be right every time. Its job is to shift enough decisions from reactive to proactive that the cost difference compounds into real savings."</p>
@@ -707,7 +707,7 @@ schedule.<span class="py-func">every</span>().day.<span class="py-func">at</span
   <h2>What I Would Do Differently</h2>
 
   <ol class="steps">
-    <li><strong>Model per SKU category sooner.</strong> I initially trained one model across all SKUs. Brake parts and engine components have very different demand patterns. Splitting by category_code improved F1 by ~4 points after retraining.</li>
+    <li><strong>Model per SKU category sooner.</strong> I initially trained one model across all SKUs. Brake parts and engine components have very different demand patterns. Splitting by category_code improved F1 by approximately 4 points after retraining.</li>
     <li><strong>Include supplier reliability as a feature.</strong> Some suppliers have variable lead times. A SKU flagged 10 days before threshold with a supplier who averages 12 days is already a problem. I added lead time variance in v2.</li>
     <li><strong>Build the Excel output earlier.</strong> I initially delivered predictions as a CSV, which the purchasing team didn't adopt. Formatting the output as a colour-coded Excel report with priority tiers drove actual usage. Adoption is the metric that matters.</li>
   </ol>
